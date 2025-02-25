@@ -2,7 +2,7 @@ from window import *
 import time
 
 class Maze():
-    def __init__(self, x1, y1, num_rows, num_cols, cell_size_x, cell_size_y, window):
+    def __init__(self, x1, y1, num_rows, num_cols, cell_size_x, cell_size_y, window = None):
         self.cells = []
         self.x1 = x1
         self.y1 = y1
@@ -40,13 +40,12 @@ class Maze():
         y_bottom_right = y_top_left + self.cell_size_y
 
         cell = Cell(self.window, Point(x_top_left, y_top_left), Point(x_bottom_right, y_bottom_right))
-        cell.draw()
-
-        self.animate()
+        if self.window is not None:
+            cell.draw()
+            self.animate()
         return cell
         # return Point(x_top_left, y_top_left), Point(x_bottom_right, y_bottom_right)
 
     def animate(self):
         self.window.redraw()
         time.sleep(.05)
-        pass
