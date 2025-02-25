@@ -56,16 +56,16 @@ class Cell():
         point_top_right = Point(self.x_top_right, self.y_top_right)
         if self.has_left_wall:
             left_wall = Line(point_bottom_left, point_top_left)
-            self.window.draw_line(left_wall, "red")
+            self.window.draw_line(left_wall, "black")
         if self.has_right_wall:
             right_wall = Line(point_bottom_right, point_top_right)
-            self.window.draw_line(right_wall, "green")
+            self.window.draw_line(right_wall, "black")
         if self.has_top_wall:
             top_wall = Line(point_top_left, point_top_right)
             self.window.draw_line(top_wall, "black")
         if self.has_bottom_wall:
             bottom_wall = Line(point_bottom_right, point_bottom_left)
-            self.window.draw_line(bottom_wall, "blue")
+            self.window.draw_line(bottom_wall, "black")
 
     def draw_move(self, to_cell, undo = False):
         self_center_x = self.x_top_right - ((self.x_top_right - self.x_bottom_left)/2)
