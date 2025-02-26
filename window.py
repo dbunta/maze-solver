@@ -4,7 +4,7 @@ class Window():
     def __init__(self, width, height):
         self.root = Tk()
         self.root.title = ""
-        self.canvas = Canvas(self.root)
+        self.canvas = Canvas(self.root, bg="white", width=width, height=height)
         self.canvas.pack()
         self.running = False
         self.root.protocol("WM_DELETE_WINDOW", self.close)
@@ -38,34 +38,37 @@ class Point():
         self.y = y
 
 class Cell():
-    def __init__(self, window, point_bottom_left, point_top_right, has_left_wall=True, has_right_wall=True, has_bottom_wall=True, has_top_wall=True):
-        self.x_bottom_left = point_bottom_left.x
-        self.y_bottom_left = point_bottom_left.y
-        self.x_top_right = point_top_right.x
-        self.y_top_right = point_top_right.y
-        self.has_right_wall = has_right_wall
-        self.has_left_wall = has_left_wall
-        self.has_top_wall = has_top_wall
-        self.has_bottom_wall = has_bottom_wall
+    def __init__(self, window):
+        self.x_top_left = None
+        self.y_top_left = None
+        self.x_bottom_right = None
+        self.y_bottom_right = None
+        self.has_right_wall = True
+        self.has_left_wall = True
+        self.has_top_wall = True
+        self.has_bottom_wall = True
         self.window = window
     
-    def draw(self):
-        point_bottom_right = Point(self.x_top_right, self.y_bottom_left)
-        point_top_left = Point(self.x_bottom_left, self.y_top_right)
-        point_bottom_left = Point(self.x_bottom_left, self.y_bottom_left)
-        point_top_right = Point(self.x_top_right, self.y_top_right)
-        if self.has_left_wall:
-            left_wall = Line(point_bottom_left, point_top_left)
-            self.window.draw_line(left_wall, "black")
-        if self.has_right_wall:
-            right_wall = Line(point_bottom_right, point_top_right)
-            self.window.draw_line(right_wall, "black")
-        if self.has_top_wall:
-            top_wall = Line(point_top_left, point_top_right)
-            self.window.draw_line(top_wall, "black")
-        if self.has_bottom_wall:
-            bottom_wall = Line(point_bottom_right, point_bottom_left)
-            self.window.draw_line(bottom_wall, "black")
+    def draw(self, x_top_left, y_top_left, x_bottom_right, y_bottom_right):
+        self.x_top_left = x_top_left
+        self.y_top_left = y_top_left 
+        self.x_bottom_right = x_bottom_right
+        self.y_bottom_right = y_bottom_right
+        point_bottom_right = Point(self.x_bottom_right, self.y_bottom_right)
+        point_top_left = Point(self.x_top_left, self.y_top_left)
+        point_bottom_left = Point(self.x_top_left, self.y_bottom_right)
+        point_top_right = Point(self.x_bottom_right, self.y_top_left)
+        left_wall = Line(point_bottom_left, point_top_left)
+        print(f"has left wall: {self.has_left_wall}")
+        if not self.has_left_wall:
+            print(f"white: {point_bottom_left.x}, {point_bottom_left.y}")
+        self.window.draw_line(left_wall, "black" if self.has_left_wall else "white")
+        right_wall = Line(point_bottom_right, point_top_right)
+        self.window.draw_line(right_wall, "black" if self.has_right_wall else "white")
+        top_wall = Line(point_top_left, point_top_right)
+        self.window.draw_line(top_wall, "black" if self.has_top_wall else "white")
+        bottom_wall = Line(point_bottom_right, point_bottom_left)
+        self.window.draw_line(bottom_wall, "black" if self.has_bottom_wall else "white")
 
     def draw_move(self, to_cell, undo = False):
         self_center_x = self.x_top_right - ((self.x_top_right - self.x_bottom_left)/2)

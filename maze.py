@@ -15,37 +15,32 @@ class Maze():
         pass
 
     def create_cells(self):
-        y1 = self.y1
         for i in range(0, self.num_cols):
-            x1 = self.x1
-            y2 = y1 + self.cell_size_y
             rows = []
             for j in range(0, self.num_rows):
-                x2 = x1 + self.cell_size_x
-                cell = self.draw_cell(x1, y1)
-                # point1, point2 = self.draw_cell(x1, y1)
-                # cell = Cell(self.window, Point(x1, y1), Point(x2, y2))
-                # cell = Cell(self.window, point1, point2)
+                cell = Cell(self.window)
                 rows.append(cell)
-                # cell.draw()
-                x1 = x2 
             self.cells.append(rows)
-            y1 = y2
-        pass
+
+        for i in range(0, self.num_cols):
+            for j in range(0, self.num_rows):
+                self.draw_cell(i, j)
 
     def draw_cell(self, i, j):
-        x_top_left = self.x1 + i
-        y_top_left = self.y1 + j
-        x_bottom_right = x_top_left + self.cell_size_x
-        y_bottom_right = y_top_left + self.cell_size_y
-
-        cell = Cell(self.window, Point(x_top_left, y_top_left), Point(x_bottom_right, y_bottom_right))
         if self.window is not None:
-            cell.draw()
+            xtl = (i * self.cell_size_x) + self.x1
+            ytl = (j * self.cell_size_y) + self.y1
+            xbr = (i * self.cell_size_x) + self.cell_size_x + self.x1
+            ybr = (j * self.cell_size_y) + self.cell_size_y + self.y1
+            self.cells[i][j].draw(xtl, ytl, xbr, ybr)
             self.animate()
-        return cell
-        # return Point(x_top_left, y_top_left), Point(x_bottom_right, y_bottom_right)
 
     def animate(self):
         self.window.redraw()
-        time.sleep(.05)
+        # time.sleep(.05)
+
+    def break_entrance_and_exit(self):
+        self.cells[0][0].has_left_wall = False
+        self.draw_cell(0, 0)
+        self.cells[self.num_cols - 1][self.num_rows - 1].has_right_wall = False
+        self.draw_cell(self.num_cols-1, self.num_rows-1)
