@@ -47,6 +47,7 @@ class Cell():
         self.has_left_wall = True
         self.has_top_wall = True
         self.has_bottom_wall = True
+        self.visited = False
         self.window = window
     
     def draw(self, x_top_left, y_top_left, x_bottom_right, y_bottom_right):
@@ -59,9 +60,6 @@ class Cell():
         point_bottom_left = Point(self.x_top_left, self.y_bottom_right)
         point_top_right = Point(self.x_bottom_right, self.y_top_left)
         left_wall = Line(point_bottom_left, point_top_left)
-        print(f"has left wall: {self.has_left_wall}")
-        if not self.has_left_wall:
-            print(f"white: {point_bottom_left.x}, {point_bottom_left.y}")
         self.window.draw_line(left_wall, "black" if self.has_left_wall else "white")
         right_wall = Line(point_bottom_right, point_top_right)
         self.window.draw_line(right_wall, "black" if self.has_right_wall else "white")

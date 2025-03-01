@@ -1,8 +1,9 @@
 from window import *
 import time
+import random
 
 class Maze():
-    def __init__(self, x1, y1, num_rows, num_cols, cell_size_x, cell_size_y, window = None):
+    def __init__(self, x1, y1, num_rows, num_cols, cell_size_x, cell_size_y, window = None, seed = None):
         self.cells = []
         self.x1 = x1
         self.y1 = y1
@@ -11,6 +12,8 @@ class Maze():
         self.num_rows = num_rows
         self.cell_size_x = cell_size_x
         self.cell_size_y = cell_size_y
+        if seed is not None:
+            random.seed(seed)
         self.create_cells()
         pass
 
@@ -44,3 +47,48 @@ class Maze():
         self.draw_cell(0, 0)
         self.cells[self.num_cols - 1][self.num_rows - 1].has_right_wall = False
         self.draw_cell(self.num_cols-1, self.num_rows-1)
+    
+
+    def break_walls_r(self, i, j):
+        # mark cell as visited
+        # check all neighbors of current cell
+        # randomly choose a neighbor cell that hasn't been visited
+        # if there are no cells to visit, draw current cell and break out of loop
+        self.cells[i][j].visited = True
+        self.draw_cell(i,j)
+        while True:
+            u = j-1
+            d = j+1
+            l = i-1
+            r = i+1
+
+            directions = []
+
+            if u >= 0 and not self.cells[i][u].visited:
+                directions.append((i,u))
+            if d >= 0 and d < self.num_rows and not self.cells[i][d].visited:
+                directions.append((i,d))
+            if l >= 0 and not self.cells[l][j].visited:
+                directions.append((l,j))
+            if r >= 0 and r < self.num_cols and not self.cells[r][j].visited:
+                directions.append((r,j))
+
+            if len(directions) == 0:
+                return 
+
+            new_dir = random.choice(directions)
+
+            if new_dir == (i,u):
+                self.cells[i][j].has_top_wall = False
+                self.cells[new_dir[0]][new_dir[1]].has_bottom_wall = False
+            elif new_dir == (i,d):
+                self.cells[i][j].has_bottom_wall = False
+                self.cells[new_dir[0]][new_dir[1]].has_top_wall = False
+            elif new_dir == (l,j):
+                self.cells[i][j].las_left_wall = False
+                self.cells[new_dir[0]][new_dir[1]].has_right_wall = False
+            elif new_dir == (r,j):
+                self.cells[i][j].has_right_wall = False
+                self.cells[new_dir[0]][new_dir[1]].has_left_wall = False
+
+            self.break_walls_r(new_dir[0], new_dir[1])

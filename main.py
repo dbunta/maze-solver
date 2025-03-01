@@ -6,6 +6,7 @@ def main():
 
     maze = Maze(5, 5, 50, 50, 10, 10, window)
     maze.break_entrance_and_exit()
+    maze.break_walls_r(0,0)
 
     # cell1 = Cell(window, Point(10, 10), Point(40, 40), True, True, True, False)
     # cell1.draw()
