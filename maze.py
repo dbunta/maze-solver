@@ -92,3 +92,8 @@ class Maze():
                 self.cells[new_dir[0]][new_dir[1]].has_left_wall = False
 
             self.break_walls_r(new_dir[0], new_dir[1])
+        
+    def reset_cells_visited(self):
+        for i in range(0, self.num_cols):
+            for j in range(0, self.num_rows):
+                self.cells[i][j].visited = False
