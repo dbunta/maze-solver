@@ -85,7 +85,7 @@ class Maze():
                 self.cells[i][j].has_bottom_wall = False
                 self.cells[new_dir[0]][new_dir[1]].has_top_wall = False
             elif new_dir == (l,j):
-                self.cells[i][j].las_left_wall = False
+                self.cells[i][j].has_left_wall = False
                 self.cells[new_dir[0]][new_dir[1]].has_right_wall = False
             elif new_dir == (r,j):
                 self.cells[i][j].has_right_wall = False
@@ -102,7 +102,6 @@ class Maze():
         self.solve_r(0,0)
 
     def solve_r(self, i, j):
-        print("here")
         # return true if (i,j) is end cell or leads to an end cell
         # otherwise, return false
         self.cells[i][j].visited = True
@@ -118,30 +117,32 @@ class Maze():
         directions = []
 
         if u >= 0 and not self.cells[i][u].visited and not self.cells[i][j].has_top_wall:
+            print("up")
             directions.append((i,u))
-        if d >= 0 and d < self.num_rows and not self.cells[i][d].visited and not self.cells[i][j].has_bottom_wall:
+        if d < self.num_rows and not self.cells[i][d].visited and not self.cells[i][j].has_bottom_wall:
+            print("down")
             directions.append((i,d))
         if l >= 0 and not self.cells[l][j].visited and not self.cells[i][j].has_left_wall:
+            print("left")
             directions.append((l,j))
-        if r >= 0 and r < self.num_cols and not self.cells[r][j].visited and not self.cells[i][j].has_right_wall:
+        if r < self.num_cols and not self.cells[r][j].visited and not self.cells[i][j].has_right_wall:
             print("right")
             directions.append((r,j))
+        
 
         for direction in directions:
             if direction == end_cell:
-                # if (direction == (i,u) and not self.cells[i][j].has_top_wall) or (direction == (i,d) and not self.cells[i][j].has_bottom_wall) or (direction == (l,j) and not self.cells[i][j].has_left_wall) or (direction == (r,j) and not self.cells[i][j].has_right_wall):
                 if direction == (i,u) or direction == (i,d) or direction == (l,j) or direction == (r,j):
+                    self.cells[i][j].draw_move(self.cells[direction[0]][direction[1]])
                     return True
 
         for direction in directions:
-            print("here")
             self.cells[i][j].draw_move(self.cells[direction[0]][direction[1]])
-            self.solve_r(direction[0], direction[1])
+            if self.solve_r(direction[0], direction[1]):
+                return True
+            else:
+                self.cells[direction[0]][direction[1]].draw_move(self.cells[i][j], True)
 
-        print(self.cells[0][0].has_top_wall)
-        print(self.cells[0][0].has_bottom_wall)
-        print(self.cells[0][0].has_left_wall)
-        print(self.cells[0][0].has_right_wall)
         return False
         
 

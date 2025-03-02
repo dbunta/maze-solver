@@ -70,12 +70,12 @@ class Cell():
 
     def draw_move(self, to_cell, undo = False):
         self_center_x = self.x_bottom_right - ((self.x_bottom_right - self.x_top_left)/2)
-        print(f"self_center_x: {self_center_x}")
+        # print(f"self_center_x: {self_center_x}")
         self_center_y = self.y_top_left - ((self.y_top_left - self.y_bottom_right)/2)
-        print(f"self_center_y: {self_center_y}")
+        # print(f"self_center_y: {self_center_y}")
         to_center_x = to_cell.x_bottom_right - ((to_cell.x_bottom_right - to_cell.x_top_left)/2)
-        print(f"to_center_x: {to_center_x}")
+        # print(f"to_center_x: {to_center_x}")
         to_center_y = to_cell.y_top_left - ((to_cell.y_top_left - to_cell.y_bottom_right)/2)
-        print(f"to_center_y: {to_center_y}")
+        # print(f"to_center_y: {to_center_y}")
         line = Line(Point(self_center_x, self_center_y), Point(to_center_x, to_center_y))
-        self.window.draw_line(line, "red" if undo else "gray")
+        self.window.draw_line(line, "white" if undo else "red")
