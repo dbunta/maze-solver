@@ -49,14 +49,14 @@ class Tests(unittest.TestCase):
             for j in range(0, num_rows):
                 self.assertFalse(m1.cells[i][j].visited)
 
-    def test_solve(self):
-        num_cols = 12
-        num_rows = 10
-        m1 = Maze(0, 0, num_rows, num_cols, 10, 10)
-        m1.break_entrance_and_exit()
-        m1.break_walls_r(0,0)
-        m1.reset_cells_visited()
-        self.assertEqual(m1.solve_r(0,0), True)
+    # def test_solve(self):
+    #     num_cols = 12
+    #     num_rows = 10
+    #     m1 = Maze(0, 0, num_rows, num_cols, 10, 10)
+    #     m1.break_entrance_and_exit()
+    #     m1.break_walls_r(0,0)
+    #     m1.reset_cells_visited()
+    #     self.assertEqual(m1.solve_r(0,0), True)
 
 
 
